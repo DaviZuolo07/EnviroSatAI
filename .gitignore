@@ -1,0 +1,26 @@
+# Ambiente
+.env
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+
+# Virtual environment
+venv/
+.venv/
+env/
+
+# Banco de dados
+data/telemetry.db
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+Thumbs.db
+desktop.ini
+
+# Testes temporários
+test_api.py
