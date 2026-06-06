@@ -1,56 +1,182 @@
 # 🛰️ EnviroSat AI — Mission Control
-
-**FIAP — 1CCPK**
-
-| Nome | RM |
-|---|---|
-| Davi Queiroz Zuolo | 571669 |
-| Gustavo Zagato Bottechia | 569420 |
-| Daniel Vilela Mana | 571632 |
-
-> Sistema de monitoramento ambiental orbital com inteligência artificial, simulando um centro de comando de satélites para detecção de queimadas, desmatamento e riscos ambientais no Brasil.
-
-## Sumário
-
-1. [Sobre o Projeto](#sobre-o-projeto)
-2. [Objetivos](#objetivos)
-3. [Arquitetura](#arquitetura)
-4. [Tecnologias](#tecnologias)
-5. [Dataset](#dataset)
-6. [Funcionalidades](#funcionalidades)
-7. [Estrutura de Pastas](#estrutura-de-pastas)
-8. [Banco de Dados](#banco-de-dados)
-9. [Sistema de Risco](#sistema-de-risco)
-10. [ARIA — Analista de IA](#aria--analista-de-ia)
-11. [Cenários Operacionais](#cenários-operacionais)
-12. [Instalação e Execução](#instalação-e-execução)
+### FIAP · Ciência da Computação · Global Solution 2026.1
+### Disciplina: Prompt Engineering and Artificial Intelligence
 
 ---
 
-## Sobre o Projeto
+## Integrantes
 
-O **EnviroSat AI** é um sistema que simula o centro de controle de uma constelação de satélites ambientais. Ele integra dados reais de queimadas (dataset CSV público), um motor de cálculo de risco, um modelo de linguagem local (ARIA/Ollama) e um dashboard web estilo Mission Control construído em Streamlit.
+| Nome | RM | Turma |
+|---|---|---|
+| Davi Queiroz Zuolo | 571669 | 1CCPK |
+| Gustavo Zagato Bottechia | 569420 | 1CCPK |
+| Daniel Vilela Mana | 571632 | 1CCPK |
 
-O sistema possui dois modos de operação:
-
-- **Dashboard Web** — interface gráfica completa com monitoramento em tempo real, gestão de incidentes e telemetria orbital
-- **Terminal (CLI)** — executa ciclos de análise e exibe os relatórios da ARIA diretamente no console via `main.py`
-
-Todo dado gerado é persistido em um banco SQLite local, mantendo histórico de telemetria e incidentes ao longo da sessão.
-
----
-
-## Objetivos
-
-- Aplicar modelos de linguagem (LLM) em um contexto operacional real de análise ambiental
-- Construir um pipeline completo: ingestão de dados reais → processamento → análise por IA → visualização
-- Praticar arquitetura modular em Python com separação de responsabilidades entre frontend, backend e serviços
-- Simular um sistema realista de observação terrestre por satélite com múltiplos cenários de risco
-- Desenvolver uma interface de comando inspirada em sistemas reais de missão espacial
+**Modalidade:** Trio
 
 ---
 
-## Arquitetura
+## O que o projeto faz
+
+O **EnviroSat AI** simula o centro de controle de uma constelação de satélites ambientais brasileiros, integrando dados reais de queimadas com IA generativa para análise operacional em tempo real. O sistema coleta dados de um dataset público de incêndios florestais, calcula um risk score por meio de lógica Python pura, e aciona a **ARIA** (Automated Risk Intelligence Analyst) — um agente LLM via Ollama Cloud — que produz análises estruturadas em linguagem natural conectando o estado orbital ao impacto terrestre. O sistema possui dois modos de operação: um **dashboard web** em Streamlit com monitoramento visual completo e uma **CLI interativa** via `main.py`, ambos com persistência em banco SQLite.
+
+---
+
+## Trilha
+
+🌳 **Trilha 2 — EnviroSat (Observação Ambiental)**
+
+Satélite simulado com sensor térmico e óptico, similar ao Amazônia-1 e Landsat, monitorando focos de incêndio, desmatamento e riscos ambientais no território brasileiro.
+
+---
+
+## Persona atendida
+
+**Operador de centro de controle ambiental (INPE / órgão estadual)**
+
+O sistema foi projetado para o operador de plantão em um centro de monitoramento ambiental que precisa tomar decisões rápidas com base em dados orbitais. A ARIA traduz telemetria técnica em linguagem operacional acessível, permitindo que o operador avalie criticidade, priorize recursos e acione brigadas sem precisar interpretar dados brutos — simulando o workflow real de sistemas como o DETER/INPE.
+
+---
+
+## 💼 Proposta de valor / modelo de negócio
+
+### 1. Problema real terrestre que esta missão resolve
+
+O Brasil perde em média 3 milhões de hectares de vegetação por ano para queimadas e desmatamento ilegal. O sistema oficial DETER/INPE processa imagens com latência de horas, inviabilizando resposta rápida de brigadas. O EnviroSat AI simula um sistema de detecção em tempo quasi-real que reduz esse gap: ao receber telemetria do satélite a cada ciclo de 15 minutos, o operador sabe imediatamente qual área está em risco crítico e qual ação tomar — sem aguardar análise manual.
+
+### 2. Quem paga pela solução
+
+Modelo híbrido:
+- **Setor público:** IBAMA, INPE, secretarias estaduais de meio ambiente — via contratos de licenciamento de software ou concessão de operação de dados orbitais.
+- **Setor privado:** seguradoras rurais (compliance e precificação de risco), grandes produtores e cooperativas (certificação ambiental), indústria florestal certificada (FSC, Cerflor).
+
+### 3. Métrica de impacto
+
+Se o sistema operar com cobertura contínua sobre a Amazônia Legal (5 milhões de km²) por 1 ano:
+- Redução no tempo médio de detecção de foco ativo de **4–6 horas para 15–30 minutos**
+- Cobertura de monitoramento de aproximadamente **500 áreas protegidas** em paralelo
+- Estimativa de **1.200 acionamentos de brigada mais precisos** por ano, reduzindo deslocamentos inúteis e aumentando taxa de contenção precoce
+
+### 4. Modelo de negócio
+
+**SaaS + dado-como-serviço:** assinatura anual para órgãos públicos com acesso à plataforma de monitoramento; API de dados orbitais processados vendida como serviço para seguradoras e plataformas de crédito rural (ex: integração com Climate FieldView, Strider).
+
+---
+
+## Tecnologias utilizadas
+
+| Camada | Tecnologia | Versão | Uso |
+|---|---|---|---|
+| Frontend | Streamlit | 1.57.0 | Interface web interativa estilo Mission Control |
+| Visualização | Plotly | — | Gráficos de séries temporais de telemetria |
+| Backend | Python | 3.11+ | Lógica, orquestração e serviços |
+| Banco de Dados | SQLite3 | embutido | Persistência local de telemetria e incidentes |
+| LLM | Ollama Cloud | gpt-oss:120b | Motor da ARIA — análise de risco por IA generativa |
+| Dados | CSV (wildfire) | — | Dataset público de queimadas como fonte primária |
+| Ambiente | python-dotenv | 1.0.1 | Gestão de credenciais via .env |
+| Logging | rich + logging | 15.0.0 | Output formatado e rastreabilidade em log |
+
+---
+
+## Como executar
+
+### Pré-requisitos
+
+- Python 3.11+
+- Conta Ollama Cloud com API Key: [https://ollama.com](https://ollama.com)
+
+### 1. Clone o repositório
+
+```bash
+git clone https://github.com/DaviZuolo07/EnviroSatAI.git
+cd EnviroSatAI
+```
+
+### 2. Crie ambiente virtual e instale dependências
+
+```bash
+python -m venv .venv
+# Windows:
+.venv\Scripts\activate
+# Linux/Mac:
+source .venv/bin/activate
+
+pip install -r requirements.txt
+```
+
+### 3. Configure as variáveis de ambiente
+
+Crie `.env` na raiz do projeto com base no `.env.example`:
+
+```env
+OLLAMA_API_KEY=sua_chave_aqui
+OLLAMA_MODEL=gpt-oss:120b
+```
+
+### 4. Execute o Dashboard Web
+
+```bash
+streamlit run frontend/app.py
+```
+
+Acesse em `http://localhost:8501`
+
+### 5. Execute a CLI (opcional)
+
+```bash
+python main.py
+```
+
+Executa ciclos interativos com output completo da ARIA no terminal.
+
+> O banco de dados `data/telemetry.db` é criado automaticamente na primeira execução.
+
+---
+
+## Demonstração
+
+![Dashboard operacional em situação normal](assets/screenshot_normal.png)
+
+![Escalada de incêndio — alertas críticos e análise da ARIA](assets/screenshot_alerta.png)
+
+![Painel de incidentes com categorias e severidades](assets/screenshot_incidentes.png)
+
+---
+
+## System Prompt
+
+O system prompt completo da ARIA está em [`prompts/system_prompt.md`](prompts/system_prompt.md).
+
+**Resumo da persona e regras:**
+
+A ARIA é instruída a atuar como analista técnica de operações orbitais com especialização em monitoramento ambiental brasileiro. Cada resposta deve conter obrigatoriamente três blocos:
+
+```
+🛰️  Situação Orbital     — estado geral do satélite com base nos parâmetros atuais
+🌎  Impacto Terrestre    — consequências reais para populações, ecossistemas e brigadas
+⚡  Recomendação         — uma ação prioritária e concreta que o operador deve tomar agora
+```
+
+Regras do prompt:
+- Usa **exclusivamente** os dados fornecidos — nunca inventa valores ou coordenadas
+- Sempre conecta o dado orbital ao impacto na Terra (brigadas, populações, ecossistemas)
+- Analisa tendências históricas dos últimos 5 ciclos quando disponíveis
+- Temperatura de geração: **0.3** para respostas técnicas e consistentes
+
+---
+
+## Cenários de teste demonstrados
+
+| # | Cenário | Condição | Resultado esperado |
+|---|---|---|---|
+| 1 | ✅ Operação Normal | Todos os parâmetros dentro do range nominal | Risk score < 20, severidade NOMINAL, sem alertas ativos |
+| 2 | 🔥 Escalada de Incêndio | Focos térmicos ≥ 25, bateria 30–60% | Risk score 45–69, severidade CRITICAL, ARIA aciona brigadas |
+| 3 | 🔋 Emergência Energética | Bateria < 10% | Risk score com +45pts de penalidade, ação automática de redução de consumo |
+| 4 | 📡 Falha de Comunicação | Sinal < 20%, geo-precisão < 40% | Alertas de comunicação, ARIA recomenda janela de downlink alternativa |
+
+---
+
+## Arquitetura do sistema
 
 ```
 ┌──────────────────────────────────────────────────┐
@@ -69,330 +195,78 @@ Todo dado gerado é persistido em um banco SQLite local, mantendo histórico de 
 ┌────▼────┐  ┌──────▼──────┐  ┌───▼────────────┐
 │Telemetry│  │ Risk Score  │  │  LLM Service   │
 │Service  │  │ Calculator  │  │  (ARIA/Ollama) │
-│         │  │             │  │                │
-│Lê CSV   │  │Score 0-100  │  │Gera análise e  │
-│Gera     │  │+ alertas    │  │recomendações   │
-│snapshot │  │+ ações auto │  │operacionais    │
-└────┬────┘  └──────┬──────┘  └───────────────┘
-     │              │
+│Lê CSV   │  │Score 0-100  │  │Gera análise em │
+│Gera     │  │+ alertas    │  │linguagem natural│
+│snapshot │  │+ ações auto │  │com impacto     │
+└────┬────┘  └──────┬──────┘  │terrestre       │
+     │              │          └───────────────┘
 ┌────▼──────────────▼──────────────────────────────┐
 │              SQLite — telemetry.db                │
 │       telemetry_logs │ incident_logs              │
 └──────────────────────────────────────────────────┘
-     │
-┌────▼──────────────────────────────────────────────┐
-│           wildfire_dataset.csv                    │
-│  Dados reais filtrados por cenário operacional    │
-└───────────────────────────────────────────────────┘
 ```
 
 ---
 
-## Tecnologias
-
-| Camada | Tecnologia | Uso |
-|---|---|---|
-| Frontend | Streamlit 1.58 | Interface web interativa |
-| Visualização | Plotly | Gráficos de séries temporais |
-| Backend | Python 3.11+ | Lógica, orquestração e serviços |
-| Banco de Dados | SQLite3 | Persistência local de telemetria e incidentes |
-| LLM | Ollama (local) | Motor da ARIA — análise de risco por IA |
-| Dataset | CSV (wildfire) | Fonte de dados reais de queimadas |
-| Logging | Python logging | Rastreabilidade em arquivo de log |
-
----
-
-## Dataset
-
-**Arquivo:** `data/wildfire_dataset.csv`
-
-Dataset público de ocorrências de incêndios florestais com variáveis meteorológicas e de comportamento do fogo. É a fonte primária de dados do sistema — cada ciclo amostra uma linha do dataset conforme o cenário ativo.
-
-**Colunas utilizadas:**
-
-| Coluna | Descrição |
-|---|---|
-| `area` | Área queimada (ha) — base para calcular focos térmicos |
-| `temp` | Temperatura ambiente (°C) — influencia o score de risco |
-| `ISI` | Initial Spread Index — índice de velocidade de propagação |
-| `wind` | Velocidade do vento (km/h) — filtra o cenário de falha de comunicação |
-
-**Fórmula de conversão para focos térmicos:**
-
-```python
-hotspots = int(clip((area + temp * 0.5 + ISI * 0.3) / 5, 0, 50))
-```
-
----
-
-## Funcionalidades
-
-### Dashboard Operacional
-- Métricas em tempo real: alertas ativos, focos térmicos, cobertura orbital
-- Mapa de situação com alertas críticos e moderados plotados
-- Telemetria ambiental: temperatura, umidade, cobertura vegetal, índice de queimadas, nível de risco
-- **Frota Orbital:** status individual dos 5 satélites com barras de bateria, sinal e integridade óptica — todos gerados a partir de dados reais
-- **Status da Missão:** risk score 0–100 com barra colorida por severidade, buffer de imagens e integridade óptica
-- Troca de cenário operacional na sidebar — todos os dados atualizam instantaneamente via limpeza de cache
-
-### Telemetria
-- Séries históricas das últimas 60 leituras em gráficos Plotly interativos
-- Tabela de status individual dos satélites da frota
-
-### Gestão de Incidentes
-- Relatório completo da **ARIA** exibido no topo de cada atualização
-- Ações automáticas executadas listadas abaixo da análise
-- Incidentes agrupados por categoria com accordion clicável (categorias críticas abertas por padrão)
-- Geração automática de novo incidente a cada **45 segundos** com base no ciclo real do backend
-- Filtros por severidade e status operacional
-- Integração com `incident_logs` do banco de dados — incidentes reais são carregados ao inicializar
-
----
-
-## Estrutura de Pastas
+## Estrutura de pastas
 
 ```
-mission-control-ai/
+EnviroSatAI/
 │
-├── frontend/                        # Interface web
-│   ├── app.py                       # Entry point e roteamento de páginas
-│   ├── auth.py                      # Tela de login com autenticação de sessão
-│   ├── styles.py                    # CSS global injetado via Streamlit
-│   ├── data_service.py              # Ponte frontend ↔ backend (cache + ciclos)
-│   │
-│   ├── components/
-│   │   ├── topbar.py                # Barra superior com horário UTC ao vivo
-│   │   ├── header.py                # Cabeçalho padrão de página
-│   │   ├── sidebar.py               # Navegação + seletor de cenário operacional
-│   │   └── cards.py                 # Componentes reutilizáveis: metric, alert, telemetry
-│   │
-│   └── views/
-│       ├── dashboard.py             # Dashboard principal com frota orbital
-│       ├── telemetry.py             # Gráficos históricos de telemetria
-│       ├── incidents.py             # Incidentes + relatório ARIA integrado
-│       ├── operators.py             # Painel de operadores
-│       └── reports.py               # Relatórios exportáveis
+├── frontend/                        # Interface web Streamlit
+│   ├── app.py                       # Entry point e roteamento
+│   ├── auth.py                      # Autenticação de sessão
+│   ├── data_service.py              # Ponte frontend ↔ backend
+│   ├── components/                  # Topbar, sidebar, cards reutilizáveis
+│   └── views/                       # Dashboard, telemetria, incidentes
 │
 ├── src/                             # Backend e lógica de negócio
-│   ├── telemetria.py                # Dataclass TelemetriaSnapshot (6 métricas)
-│   ├── risk_score.py                # Cálculo de risco, alertas e ações automáticas
-│   │
-│   ├── database/
-│   │   ├── connection.py            # Conexão SQLite com WAL mode e foreign keys
-│   │   ├── schema.py                # Criação automática das tabelas ao iniciar
-│   │   ├── telemetry_repository.py  # Insert e consulta de telemetry_logs
-│   │   └── incident_repository.py   # Insert de incident_logs (só se houver alertas)
-│   │
-│   ├── orchestrators/
-│   │   └── mission_orchestrator.py  # Orquestra ciclo: telemetria → risco → DB → LLM
-│   │
-│   ├── services/
-│   │   ├── telemetry_service.py     # Lê CSV, filtra por cenário, gera TelemetriaSnapshot
-│   │   └── llm_service.py           # Monta prompt, chama Ollama, formata resposta da ARIA
-│   │
-│   └── utils/
-│       └── logger.py                # Logger centralizado — saída para logs/envirosat.log
+│   ├── telemetria.py                # Dataclass TelemetriaSnapshot
+│   ├── risk_score.py                # Cálculo de risco e ações automáticas
+│   ├── database/                    # Conexão SQLite, schema, repositórios
+│   ├── orchestrators/               # MissionOrchestrator — ciclo completo
+│   ├── services/                    # TelemetryService, LLMService (ARIA)
+│   └── utils/logger.py              # Logger centralizado
 │
 ├── config/
-│   ├── scenarios.py                 # Enum Scenario + filtros de dataset por cenário
-│   └── thresholds.py                # Limiares de risco para cada métrica de telemetria
+│   ├── scenarios.py                 # Enum Scenario + filtros de dataset
+│   └── thresholds.py                # Limiares de risco por métrica
 │
 ├── data/
-│   ├── wildfire_dataset.csv         # Dataset público de queimadas (fonte primária)
-│   └── telemetry.db                 # Banco SQLite gerado automaticamente na primeira run
-│
-├── logs/
-│   └── envirosat.log                # Log operacional persistente
+│   ├── wildfire_dataset.csv         # Dataset público de queimadas
+│   └── telemetry.db                 # Banco SQLite (gerado automaticamente)
 │
 ├── prompts/
-│   └── system_prompt.md             # System prompt da ARIA com exemplos few-shot
+│   └── system_prompt.md             # System prompt da ARIA (few-shot)
 │
-└── requirements.txt
+├── assets/                          # Screenshots do sistema funcionando
+├── logs/                            # Log operacional persistente
+├── main.py                          # Entry point da CLI
+├── requirements.txt                 # Dependências com versões fixadas
+├── .env.example                     # Template de variáveis (sem chave real)
+└── .gitignore                       # Ignora .env, __pycache__, telemetry.db
 ```
 
 ---
 
-## Banco de Dados
+## Limitações conhecidas
 
-O banco SQLite é inicializado automaticamente na primeira execução via `schema.py`. Utiliza **WAL mode** para melhor desempenho em leitura concorrente e **foreign keys** ativas.
-
-### Tabela: `telemetry_logs`
-
-Registra cada ciclo executado com todos os parâmetros do satélite.
-
-```sql
-CREATE TABLE IF NOT EXISTS telemetry_logs (
-    id                  INTEGER PRIMARY KEY AUTOINCREMENT,
-    timestamp           TEXT    NOT NULL,   -- ISO 8601 UTC
-    scenario            TEXT    NOT NULL,   -- wildfire_escalation | low_power_emergency | ...
-    thermal_hotspots    INTEGER,            -- focos detectados (0–50)
-    battery_level       REAL,              -- nível de bateria em % (0–100)
-    signal_strength     REAL,              -- força do sinal em % (0–100)
-    geo_accuracy        REAL,              -- precisão geoespacial em % (0–100)
-    image_buffer_queue  INTEGER,           -- imagens na fila (0–100)
-    optical_integrity   REAL,              -- integridade óptica em % (0–100)
-    risk_score          REAL,              -- score calculado (0–100)
-    severity            TEXT               -- NOMINAL | WARNING | CRITICAL | EMERGENCY
-);
-
-CREATE INDEX IF NOT EXISTS idx_telemetry_scenario  ON telemetry_logs(scenario);
-CREATE INDEX IF NOT EXISTS idx_telemetry_timestamp ON telemetry_logs(timestamp);
-```
-
-### Tabela: `incident_logs`
-
-Registra apenas ciclos com alertas ativos. Alertas e ações são armazenados como JSON.
-
-```sql
-CREATE TABLE IF NOT EXISTS incident_logs (
-    id                  INTEGER PRIMARY KEY AUTOINCREMENT,
-    timestamp           TEXT    NOT NULL,   -- ISO 8601 UTC
-    scenario            TEXT    NOT NULL,
-    severity            TEXT    NOT NULL,   -- NOMINAL | WARNING | CRITICAL | EMERGENCY
-    risk_score          REAL,
-    alerts              TEXT,               -- JSON array de strings com alertas ativos
-    automated_actions   TEXT                -- JSON array de strings com ações executadas
-);
-
-CREATE INDEX IF NOT EXISTS idx_incident_severity ON incident_logs(severity);
-```
-
-**Exemplo de registro em `incident_logs`:**
-
-```json
-{
-  "timestamp": "2026-06-04T14:32:10+00:00",
-  "scenario": "wildfire_escalation",
-  "severity": "CRITICAL",
-  "risk_score": 63.0,
-  "alerts": [
-    "ALERTA DE INCÊNDIO — focos térmicos acima do limiar",
-    "BAIXA ENERGIA — bateria abaixo do limiar operacional"
-  ],
-  "automated_actions": [
-    "Priorização de transmissão de imagens termais",
-    "Redução de consumo orbital"
-  ]
-}
-```
+- **Ollama local vs Cloud:** a versão atual usa Ollama local (`localhost:11434`). Para uso com Ollama Cloud API (`gpt-oss:120b` remoto), é necessário ajustar o `OLLAMA_API_URL` no `.env` — o código suporta ambos via configuração.
+- **Dataset estático:** os dados de queimadas são de um CSV público pré-carregado — não há integração com APIs em tempo real do INPE/DETER nesta versão.
+- **Mapa simplificado:** o mapa de situação no dashboard usa coordenadas simuladas dentro do território brasileiro, não coordenadas reais dos focos do dataset.
+- **Sem autenticação robusta:** o sistema de login é por sessão Streamlit, sem banco de usuários — adequado para demonstração, não para produção.
+- **Sem testes automatizados:** o arquivo `test.py` contém testes manuais pontuais, não uma suíte de testes completa com pytest.
 
 ---
 
-## Sistema de Risco
+## 🎬 Vídeo de demonstração
 
-O `calcular_risk_score()` avalia 6 métricas independentes e soma penalidades ao score final (máximo 100).
+🔗 [Assistir demonstração no YouTube](https://www.youtube.com/watch?v=SEU_ID_AQUI)
 
-| Métrica | Condição Crítica | Penalidade |
-|---|---|---|
-| Focos Térmicos | ≥ 25 focos | +40 pts |
-| Bateria | < 10% | +45 pts |
-| Força do Sinal | < 20% | +25 pts |
-| Precisão Geoespacial | < 40% | +15 pts |
-| Buffer de Imagens | > 85 imagens | +10 pts |
-| Integridade Óptica | < 60% | +15 pts |
-
-**Níveis de severidade (definidos em `thresholds.py`):**
-
-| Score | Severidade |
-|---|---|
-| 0 – 19 | NOMINAL |
-| 20 – 44 | WARNING |
-| 45 – 69 | CRITICAL |
-| 70 – 100 | EMERGENCY |
-
-Para cada limiar atingido, além da penalidade no score, o sistema gera alertas textuais e ações automáticas que são exibidos no dashboard e persistidos no banco.
-
----
-
-## ARIA — Analista de IA
-
-**ARIA** (Automated Risk Intelligence Analyst) é o componente de inteligência artificial do sistema. Recebe o snapshot completo de telemetria, o risk score calculado e o histórico dos últimos 5 ciclos, e produz uma análise estruturada em 3 blocos obrigatórios:
-
-```
-🛰️  Situação Orbital
-    Estado geral do satélite com base nos parâmetros atuais.
-
-🌎 Impacto Terrestre
-    Consequências reais para populações, ecossistemas e brigadas em campo.
-
-⚡ Recomendação ao Operador
-    Uma ação prioritária e concreta que o operador humano deve tomar agora.
-```
-
-**Regras do sistema prompt:**
-- Usa **exclusivamente** os dados fornecidos — nunca inventa valores ou coordenadas
-- Não reclassifica o risk score (interpreta, não recalcula)
-- Não repete ações automáticas já listadas como recomendação
-- Analisa tendências históricas quando há ciclos anteriores (escalada, estabilização ou melhora)
-- Temperatura de geração: **0.3** — respostas técnicas e objetivas
-
-A ARIA é acionada pelo `MissionOrchestrator` a cada ciclo e sua análise é exibida no topo da página de Incidentes do dashboard.
-
----
-
-## Cenários Operacionais
-
-Quatro cenários controlam o filtro no dataset e os ranges de geração de telemetria:
-
-| Cenário | Filtro no Dataset | Telemetria Gerada |
-|---|---|---|
-| 🔥 Escalada de Incêndio | `area > 10` | Muitos focos, bateria 30–60%, sinal 60–85% |
-| 🔋 Emergência Energética | `area <= 5` | Bateria crítica 5–18%, sinal degradado 40–65% |
-| 📡 Falha de Comunicação | `wind > 5` | Sinal mínimo 5–22%, geo-precisão 30–58% |
-| ✅ Operação Normal | `area == 0` | Bateria 72–100%, sinal 82–100%, tudo nominal |
-
-Ao trocar o cenário na sidebar, o `st.cache_data` é limpo e todos os componentes do dashboard recalculam com o novo contexto imediatamente.
-
----
-
-## Instalação e Execução
-
-### Pré-requisitos
-
-- Python 3.11+
-- [Ollama](https://ollama.com) instalado localmente
-
-### 1. Instalar dependências
-
-```bash
-pip install -r requirements.txt
-```
-
-### 2. Configurar variáveis de ambiente
-
-Crie `.env` na raiz do projeto:
-
-```env
-OLLAMA_API_URL=http://localhost:11434/api/chat
-OLLAMA_MODEL=gpt-oss:120b-cloud
-```
-
-### 3. Iniciar o Ollama
-
-```bash
-ollama serve
-```
-
-### 4. Executar o Dashboard Web
-
-```bash
-streamlit run frontend/app.py
-```
-
-Acesse em `http://localhost:8501`
-
-### 5. Executar no Terminal (opcional)
-
-```bash
-python main.py
-```
-
-Executa ciclos interativos com output completo da ARIA no console.
-
-> O banco de dados `data/telemetry.db` é criado automaticamente na primeira execução.
+> Configurado como "Não listado" no YouTube. Duração: menos de 3 minutos.
 
 ---
 
 <div align="center">
-  <sub>FIAP 1CCPK · EnviroSat AI — Orbital Environmental Command</sub>
+  <sub>FIAP · Ciência da Computação · Global Solution 2026.1 · Prompt Engineering and Artificial Intelligence</sub>
 </div>
