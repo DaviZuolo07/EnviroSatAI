@@ -290,3 +290,87 @@
 2026-06-03 22:49:46,193 [INFO] src.orchestrators.mission_orchestrator: Risk Score: 50.0/100 — CRITICAL
 2026-06-03 22:49:46,198 [INFO] src.orchestrators.mission_orchestrator: Consultando ARIA (LLM)...
 2026-06-03 22:49:52,846 [INFO] src.orchestrators.mission_orchestrator: Ciclo concluído.
+2026-06-03 23:02:25,473 [INFO] src.orchestrators.mission_orchestrator: MissionOrchestrator inicializado.
+2026-06-03 23:02:25,475 [INFO] src.orchestrators.mission_orchestrator: Iniciando ciclo — cenário: NORMAL
+2026-06-03 23:02:25,487 [INFO] src.orchestrators.mission_orchestrator: Telemetria gerada: hotspots=3 battery=97.2
+2026-06-03 23:02:25,487 [INFO] src.orchestrators.mission_orchestrator: Risk Score: 0.0/100 — NOMINAL
+2026-06-03 23:02:25,490 [INFO] src.orchestrators.mission_orchestrator: Consultando ARIA (LLM)...
+2026-06-03 23:02:29,767 [INFO] src.orchestrators.mission_orchestrator: Ciclo concluído.
+2026-06-03 23:03:06,702 [INFO] src.orchestrators.mission_orchestrator: Iniciando ciclo — cenário: WILDFIRE
+2026-06-03 23:03:06,704 [INFO] src.orchestrators.mission_orchestrator: Telemetria gerada: hotspots=25 battery=30.9
+2026-06-03 23:03:06,705 [INFO] src.orchestrators.mission_orchestrator: Risk Score: 65.0/100 — CRITICAL
+2026-06-03 23:03:06,710 [INFO] src.orchestrators.mission_orchestrator: Consultando ARIA (LLM)...
+2026-06-03 23:03:12,632 [INFO] src.orchestrators.mission_orchestrator: Ciclo concluído.
+2026-06-03 23:08:53,965 [INFO] src.orchestrators.mission_orchestrator: Iniciando ciclo — cenário: NORMAL
+2026-06-03 23:08:53,969 [INFO] src.orchestrators.mission_orchestrator: Telemetria gerada: hotspots=1 battery=91.0
+2026-06-03 23:08:53,969 [INFO] src.orchestrators.mission_orchestrator: Risk Score: 0.0/100 — NOMINAL
+2026-06-03 23:08:53,975 [INFO] src.orchestrators.mission_orchestrator: Consultando ARIA (LLM)...
+2026-06-03 23:08:57,885 [INFO] src.orchestrators.mission_orchestrator: Ciclo concluído.
+2026-06-03 23:10:19,170 [INFO] src.orchestrators.mission_orchestrator: Iniciando ciclo — cenário: NORMAL
+2026-06-03 23:10:19,172 [INFO] src.orchestrators.mission_orchestrator: Telemetria gerada: hotspots=2 battery=96.4
+2026-06-03 23:10:19,172 [INFO] src.orchestrators.mission_orchestrator: Risk Score: 0.0/100 — NOMINAL
+2026-06-03 23:10:19,176 [INFO] src.orchestrators.mission_orchestrator: Consultando ARIA (LLM)...
+2026-06-03 23:10:23,420 [INFO] src.orchestrators.mission_orchestrator: Ciclo concluído.
+2026-06-03 23:10:31,578 [INFO] src.orchestrators.mission_orchestrator: Iniciando ciclo — cenário: COMM_FAIL
+2026-06-03 23:10:31,580 [INFO] src.orchestrators.mission_orchestrator: Telemetria gerada: hotspots=8 battery=62.2
+2026-06-03 23:10:31,580 [INFO] src.orchestrators.mission_orchestrator: Risk Score: 55.0/100 — CRITICAL
+2026-06-03 23:10:31,585 [INFO] src.orchestrators.mission_orchestrator: Consultando ARIA (LLM)...
+2026-06-03 23:10:39,155 [INFO] src.orchestrators.mission_orchestrator: Ciclo concluído.
+2026-06-05 21:13:56,489 [INFO] src.orchestrators.mission_orchestrator: MissionOrchestrator inicializado.
+2026-06-05 21:13:56,492 [INFO] src.orchestrators.mission_orchestrator: Iniciando ciclo — cenário: NORMAL
+2026-06-05 21:13:56,498 [INFO] src.orchestrators.mission_orchestrator: Telemetria gerada: hotspots=2 battery=78.2
+2026-06-05 21:13:56,498 [INFO] src.orchestrators.mission_orchestrator: Risk Score: 0.0/100 — NOMINAL
+2026-06-05 21:13:56,502 [INFO] src.orchestrators.mission_orchestrator: Consultando ARIA (LLM)...
+2026-06-05 21:14:00,496 [INFO] src.orchestrators.mission_orchestrator: Ciclo concluído.
+2026-06-05 21:14:29,416 [INFO] src.orchestrators.mission_orchestrator: Iniciando ciclo — cenário: NORMAL
+2026-06-05 21:14:29,418 [INFO] src.orchestrators.mission_orchestrator: Telemetria gerada: hotspots=3 battery=97.6
+2026-06-05 21:14:29,418 [INFO] src.orchestrators.mission_orchestrator: Risk Score: 0.0/100 — NOMINAL
+2026-06-05 21:14:29,429 [INFO] src.orchestrators.mission_orchestrator: Consultando ARIA (LLM)...
+2026-06-05 21:14:32,960 [INFO] src.orchestrators.mission_orchestrator: Ciclo concluído.
+2026-06-05 21:14:35,934 [INFO] src.orchestrators.mission_orchestrator: Iniciando ciclo — cenário: WILDFIRE
+2026-06-05 21:14:35,935 [INFO] src.orchestrators.mission_orchestrator: Telemetria gerada: hotspots=25 battery=54.4
+2026-06-05 21:14:35,935 [INFO] src.orchestrators.mission_orchestrator: Risk Score: 50.0/100 — CRITICAL
+2026-06-05 21:14:35,942 [INFO] src.orchestrators.mission_orchestrator: Consultando ARIA (LLM)...
+2026-06-05 21:14:41,331 [INFO] src.orchestrators.mission_orchestrator: Ciclo concluído.
+2026-06-05 21:14:44,714 [INFO] src.orchestrators.mission_orchestrator: Iniciando ciclo — cenário: COMM_FAIL
+2026-06-05 21:14:44,715 [INFO] src.orchestrators.mission_orchestrator: Telemetria gerada: hotspots=8 battery=69.5
+2026-06-05 21:14:44,716 [INFO] src.orchestrators.mission_orchestrator: Risk Score: 48.0/100 — CRITICAL
+2026-06-05 21:14:44,723 [INFO] src.orchestrators.mission_orchestrator: Consultando ARIA (LLM)...
+2026-06-05 21:14:50,459 [INFO] src.orchestrators.mission_orchestrator: Ciclo concluído.
+2026-06-05 21:16:09,482 [INFO] src.orchestrators.mission_orchestrator: Iniciando ciclo — cenário: COMM_FAIL
+2026-06-05 21:16:09,483 [INFO] src.orchestrators.mission_orchestrator: Telemetria gerada: hotspots=8 battery=60.9
+2026-06-05 21:16:09,483 [INFO] src.orchestrators.mission_orchestrator: Risk Score: 45.0/100 — CRITICAL
+2026-06-05 21:16:09,491 [INFO] src.orchestrators.mission_orchestrator: Consultando ARIA (LLM)...
+2026-06-05 21:16:16,281 [INFO] src.orchestrators.mission_orchestrator: Ciclo concluído.
+2026-06-05 21:19:49,964 [INFO] src.orchestrators.mission_orchestrator: MissionOrchestrator inicializado.
+2026-06-05 21:19:49,967 [INFO] src.orchestrators.mission_orchestrator: Iniciando ciclo — cenário: NORMAL
+2026-06-05 21:19:49,976 [INFO] src.orchestrators.mission_orchestrator: Telemetria gerada: hotspots=3 battery=77.4
+2026-06-05 21:19:49,976 [INFO] src.orchestrators.mission_orchestrator: Risk Score: 0.0/100 — NOMINAL
+2026-06-05 21:19:49,982 [INFO] src.orchestrators.mission_orchestrator: Consultando ARIA (LLM)...
+2026-06-05 21:19:54,511 [INFO] src.orchestrators.mission_orchestrator: Ciclo concluído.
+2026-06-05 21:20:02,779 [INFO] src.orchestrators.mission_orchestrator: Iniciando ciclo — cenário: COMM_FAIL
+2026-06-05 21:20:02,780 [INFO] src.orchestrators.mission_orchestrator: Telemetria gerada: hotspots=8 battery=56.1
+2026-06-05 21:20:02,781 [INFO] src.orchestrators.mission_orchestrator: Risk Score: 45.0/100 — CRITICAL
+2026-06-05 21:20:02,787 [INFO] src.orchestrators.mission_orchestrator: Consultando ARIA (LLM)...
+2026-06-05 21:20:09,139 [INFO] src.orchestrators.mission_orchestrator: Ciclo concluído.
+2026-06-05 21:20:16,062 [INFO] src.orchestrators.mission_orchestrator: Iniciando ciclo — cenário: LOW_POWER
+2026-06-05 21:20:16,063 [INFO] src.orchestrators.mission_orchestrator: Telemetria gerada: hotspots=3 battery=17.4
+2026-06-05 21:20:16,063 [INFO] src.orchestrators.mission_orchestrator: Risk Score: 35.0/100 — WARNING
+2026-06-05 21:20:16,070 [INFO] src.orchestrators.mission_orchestrator: Consultando ARIA (LLM)...
+2026-06-05 21:20:21,419 [INFO] src.orchestrators.mission_orchestrator: Ciclo concluído.
+2026-06-05 21:21:27,581 [INFO] src.orchestrators.mission_orchestrator: MissionOrchestrator inicializado.
+2026-06-05 21:21:27,583 [INFO] src.orchestrators.mission_orchestrator: Iniciando ciclo — cenário: NORMAL
+2026-06-05 21:21:27,589 [INFO] src.orchestrators.mission_orchestrator: Telemetria gerada: hotspots=3 battery=72.3
+2026-06-05 21:21:27,589 [INFO] src.orchestrators.mission_orchestrator: Risk Score: 0.0/100 — NOMINAL
+2026-06-05 21:21:27,593 [INFO] src.orchestrators.mission_orchestrator: Consultando ARIA (LLM)...
+2026-06-05 21:21:32,057 [INFO] src.orchestrators.mission_orchestrator: Ciclo concluído.
+2026-06-05 21:21:35,502 [INFO] src.orchestrators.mission_orchestrator: Iniciando ciclo — cenário: LOW_POWER
+2026-06-05 21:21:35,503 [INFO] src.orchestrators.mission_orchestrator: Telemetria gerada: hotspots=2 battery=10.4
+2026-06-05 21:21:35,503 [INFO] src.orchestrators.mission_orchestrator: Risk Score: 49.0/100 — CRITICAL
+2026-06-05 21:21:35,510 [INFO] src.orchestrators.mission_orchestrator: Consultando ARIA (LLM)...
+2026-06-05 21:21:40,770 [INFO] src.orchestrators.mission_orchestrator: Ciclo concluído.
+2026-06-05 21:21:43,956 [INFO] src.orchestrators.mission_orchestrator: Iniciando ciclo — cenário: WILDFIRE
+2026-06-05 21:21:43,957 [INFO] src.orchestrators.mission_orchestrator: Telemetria gerada: hotspots=25 battery=45.2
+2026-06-05 21:21:43,957 [INFO] src.orchestrators.mission_orchestrator: Risk Score: 50.0/100 — CRITICAL
+2026-06-05 21:21:43,964 [INFO] src.orchestrators.mission_orchestrator: Consultando ARIA (LLM)...
+2026-06-05 21:21:49,462 [INFO] src.orchestrators.mission_orchestrator: Ciclo concluído.

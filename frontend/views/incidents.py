@@ -7,7 +7,7 @@ from datetime import datetime, timezone
 from frontend.components.topbar import render_topbar
 from frontend.components.header import render_page_header
 from frontend.components.cards  import section_header
-from frontend.data_service      import get_cycle_data
+from frontend.data_service      import get_cycle_data, get_db_incidents
 
 SEVERITY_COLOR = {"CRÍTICO": "#ef4444", "MODERADO": "#f59e0b", "BAIXO": "#4ade80"}
 STATUS_COLOR   = {
@@ -18,11 +18,11 @@ STATUS_COLOR   = {
 }
 
 CATEGORIAS = {
-    "🔥 INCÊNDIOS":        {"keywords": ["FOCO","INCÊNDIO","QUEIMADA","FUMAÇA","ANOMALIA TÉRMICA"], "cor": "#ef4444"},
-    "🌳 DESMATAMENTO":     {"keywords": ["DESMATAMENTO","CORTE","ÁREA DEGRADADA"],                  "cor": "#f59e0b"},
-    "⛏️ EXTRAÇÃO ILEGAL":  {"keywords": ["EXTRAÇÃO","MINERAÇÃO"],                                   "cor": "#fb923c"},
-    "💧 RECURSOS HÍDRICOS":{"keywords": ["HÍDRICA","HÍDRICO","RISCO HÍDRICO"],                     "cor": "#60a5fa"},
-    "⚠️ RISCO GERAL":      {"keywords": ["RISCO","ÁREA DE RISCO"],                                  "cor": "#6b9c6b"},
+    "🔥 INCÊNDIOS":         {"keywords": ["FOCO","INCÊNDIO","QUEIMADA","FUMAÇA","ANOMALIA TÉRMICA"], "cor": "#ef4444"},
+    "🌳 DESMATAMENTO":      {"keywords": ["DESMATAMENTO","CORTE","ÁREA DEGRADADA"],                  "cor": "#f59e0b"},
+    "⛏️ EXTRAÇÃO ILEGAL":   {"keywords": ["EXTRAÇÃO","MINERAÇÃO"],                                   "cor": "#fb923c"},
+    "💧 RECURSOS HÍDRICOS": {"keywords": ["HÍDRICA","HÍDRICO","RISCO HÍDRICO"],                     "cor": "#60a5fa"},
+    "⚠️ RISCO GERAL":       {"keywords": ["RISCO","ÁREA DE RISCO","INCÊNDIO CRÍTICO","MONITORAMENTO","EMERGÊNCIA","DEGRADAÇÃO","CONGESTIONAMENTO","FALHA"], "cor": "#6b9c6b"},
 }
 
 _BASE_INCIDENTS = [
@@ -74,6 +74,19 @@ def _init():
         st.session_state.last_inc_time = time.time()
         st.session_state.novo_id       = None
 
+        # Carrega incidentes reais do banco ao inicializar
+        for db_inc in get_db_incidents():
+            alerts = db_inc["alerts"]
+            if not alerts:
+                continue
+            title  = alerts[0][:40].upper()
+            ts     = db_inc["timestamp"][:16].replace("T", " ") + " UTC"
+            sev    = db_inc["severity"] if db_inc["severity"] in SEVERITY_COLOR else "BAIXO"
+            status = random.choice(_STATUS_BY_SEV[sev])
+            inc_id = f"INC-{st.session_state.inc_counter:03d}"
+            st.session_state.incidents.append((inc_id, title, "BANCO DE DADOS", sev, ts, status, "📡"))
+            st.session_state.inc_counter += 1
+
 
 def _maybe_add(scenario):
     if time.time() - st.session_state.last_inc_time < 45:
@@ -91,17 +104,49 @@ def _maybe_add(scenario):
     return True
 
 
-def _build_full_html(grupos, novo_id):
-    # Categorias com crítico ficam abertas por padrão
+def _render_aria(data: dict):
+    aria = data["aria_analise"].replace("\n", "<br>")
+    acoes = data.get("acoes", [])
+
+    acoes_html = ""
+    if acoes:
+        itens = "".join(
+            f'<div style="padding:4px 0;border-bottom:1px solid #1a3a1a;font-size:.78rem;color:#a0d0a0;">'
+            f'<span style="color:#4ade80;margin-right:8px;">▶</span>{a}</div>'
+            for a in acoes
+        )
+        acoes_html = f"""
+<div style="margin-top:14px;padding-top:12px;border-top:1px solid #1a4a1a;">
+  <div style="font-size:.6rem;letter-spacing:.2em;color:#4a7a4a;margin-bottom:8px;">AÇÕES AUTOMÁTICAS EXECUTADAS</div>
+  {itens}
+</div>"""
+
+    st.markdown(f"""
+<div style="background:rgba(4,16,4,0.7);border:1px solid #1a4a1a;border-left:4px solid #4ade80;
+            border-radius:8px;padding:16px 20px;margin:16px 0 20px 0;">
+  <div style="font-size:.6rem;letter-spacing:.2em;color:#4ade80;margin-bottom:12px;">
+    ⚡ RELATÓRIO ARIA — AUTOMATED RISK INTELLIGENCE ANALYST
+  </div>
+  <div style="font-size:.82rem;color:#a0d0a0;line-height:1.8;font-family:'Share Tech Mono',monospace;white-space:pre-wrap;">
+    {aria}
+  </div>
+  {acoes_html}
+</div>""", unsafe_allow_html=True)
+
+
+def _build_html(grupos, novo_id):
     blocos = ""
     for idx, (cat, items) in enumerate(grupos.items()):
         if not items:
             continue
-        cor      = CATEGORIAS[cat]["cor"]
-        n_crit   = sum(1 for i in items if i[3] == "CRÍTICO")
-        aberto   = "true" if n_crit > 0 else "false"
-        display  = "block" if n_crit > 0 else "none"
-        crit_tag = f'<span style="color:#ef4444;margin-left:8px;font-size:.75rem;">&#128308; {n_crit} CR&#205;TICO{"S" if n_crit>1 else ""}</span>' if n_crit else ""
+        cor     = CATEGORIAS[cat]["cor"]
+        n_crit  = sum(1 for i in items if i[3] == "CRÍTICO")
+        aberto  = "true" if n_crit > 0 else "false"
+        display = "block" if n_crit > 0 else "none"
+        crit_tag = (
+            f'<span style="color:#ef4444;margin-left:8px;font-size:.75rem;">'
+            f'&#128308; {n_crit} CR&#205;TICO{"S" if n_crit>1 else ""}</span>'
+        ) if n_crit else ""
 
         cards = ""
         for inc in items:
@@ -140,44 +185,34 @@ def _build_full_html(grupos, novo_id):
       width:100%;display:flex;align-items:center;justify-content:space-between;
       padding:10px 16px;background:rgba(5,18,5,0.7);
       border:1px solid {cor}44;border-left:4px solid {cor};
-      border-radius:6px;cursor:pointer;text-align:left;transition:background .2s;">
+      border-radius:6px;cursor:pointer;text-align:left;">
     <div style="display:flex;align-items:center;gap:10px;">
       <span style="color:{cor};font-size:.85rem;font-weight:700;letter-spacing:.12em;">{cat}</span>
       <span style="color:#5a8a5a;font-size:.75rem;">{len(items)} ocorr&#234;ncia{"s" if len(items)>1 else ""}</span>
       {crit_tag}
     </div>
-    <span id="arrow-{idx}" style="color:{cor};font-size:1rem;transition:transform .2s;">
-      {"&#9660;" if aberto == "true" else "&#9654;"}
-    </span>
+    <span id="arrow-{idx}" style="color:{cor};font-size:1rem;">{"&#9660;" if aberto=="true" else "&#9654;"}</span>
   </button>
   <div id="cat-{idx}" style="display:{display};padding:8px 4px 0 4px;">
     {cards}
   </div>
 </div>"""
 
-    js = """
-<script>
-function toggle(idx) {
-  var content = document.getElementById('cat-' + idx);
-  var arrow   = document.getElementById('arrow-' + idx);
-  if (content.style.display === 'none') {
-    content.style.display = 'block';
-    arrow.innerHTML = '&#9660;';
-  } else {
-    content.style.display = 'none';
-    arrow.innerHTML = '&#9654;';
-  }
-}
-</script>"""
-
     return f"""
 <style>
-  * {{ box-sizing:border-box; margin:0; padding:0; }}
-  body {{ background:transparent; font-family:'Segoe UI',sans-serif; }}
-  button:hover {{ background:rgba(10,30,10,0.9) !important; }}
+  *{{box-sizing:border-box;margin:0;padding:0;}}
+  body{{background:transparent;font-family:'Segoe UI',sans-serif;}}
+  button:hover{{background:rgba(10,30,10,0.9)!important;}}
 </style>
 {blocos}
-{js}"""
+<script>
+function toggle(idx){{
+  var c=document.getElementById('cat-'+idx);
+  var a=document.getElementById('arrow-'+idx);
+  if(c.style.display==='none'){{c.style.display='block';a.innerHTML='&#9660;'}}
+  else{{c.style.display='none';a.innerHTML='&#9654;'}}
+}}
+</script>"""
 
 
 def render_incidents():
@@ -187,6 +222,7 @@ def render_incidents():
     novo      = _maybe_add(scenario)
     novo_id   = st.session_state.novo_id
     incidents = st.session_state.incidents
+    data      = get_cycle_data(scenario)
 
     render_topbar("INCIDENTES", "REGISTRO E MONITORAMENTO DE OCORRÊNCIAS")
     render_page_header("GESTÃO DE INCIDENTES", "OCORRÊNCIAS ATIVAS")
@@ -211,9 +247,12 @@ def render_incidents():
   <div class="metric-value" style="font-size:2rem;color:{color};">{val}</div>
 </div>""", unsafe_allow_html=True)
 
+    # ── Relatório ARIA ──
+    _render_aria(data)
+
     remaining = max(0, int(45 - (time.time() - st.session_state.last_inc_time)))
     st.markdown(f"""
-<div style="font-family:monospace;font-size:.7rem;color:#4a7a4a;text-align:right;margin:4px 0 16px;">
+<div style="font-family:monospace;font-size:.7rem;color:#4a7a4a;text-align:right;margin-bottom:16px;">
   PRÓXIMO CICLO EM: <span style="color:#4ade80;">{remaining}s</span>
   {"&nbsp;&nbsp;<span style='color:#4ade80;'>&#9889; NOVO INCIDENTE GERADO</span>" if novo else ""}
 </div>""", unsafe_allow_html=True)
@@ -240,11 +279,7 @@ def render_incidents():
     total_items = sum(len(v) for v in grupos.values())
     altura      = max(400, len([v for v in grupos.values() if v]) * 60 + total_items * 90)
 
-    components.html(
-        _build_full_html(grupos, novo_id),
-        height=altura,
-        scrolling=False,
-    )
+    components.html(_build_html(grupos, novo_id), height=altura, scrolling=False)
 
     if novo:
         st.rerun()

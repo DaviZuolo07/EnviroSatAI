@@ -47,3 +47,22 @@ def get_cycle_data(scenario_value: str) -> dict:
         # Histórico
         "historico": result.historico,
     }
+@st.cache_data(ttl=30, show_spinner=False)
+def get_db_incidents() -> list:
+    from src.database.connection import get_connection
+    import json
+    try:
+        with get_connection() as conn:
+            rows = conn.execute(
+                "SELECT timestamp, severity, risk_score, alerts, automated_actions "
+                "FROM incident_logs ORDER BY id DESC LIMIT 20"
+            ).fetchall()
+        result = []
+        for r in rows:
+            d = dict(r)
+            d["alerts"]            = json.loads(d["alerts"])
+            d["automated_actions"] = json.loads(d["automated_actions"])
+            result.append(d)
+        return result
+    except Exception:
+        return []

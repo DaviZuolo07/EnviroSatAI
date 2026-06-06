@@ -1,14 +1,15 @@
+import random as _rnd
+import datetime
 import streamlit as st
+
 from frontend.components.topbar import render_topbar
 from frontend.components.header import render_page_header
 from frontend.components.cards  import metric_card, alert_card, telemetry_row, section_header
-from frontend.data_service import get_cycle_data
+from frontend.data_service      import get_cycle_data
 
 MAP_HTML = """
 <div class="map-container">
-    <div style="padding:10px 14px 6px;">
-        <div class="section-title">MAPA DE SITUAÇÃO</div>
-    </div>
+    <div style="padding:10px 14px 6px;"><div class="section-title">MAPA DE SITUAÇÃO</div></div>
     <div style="position:relative;height:270px;background:linear-gradient(160deg,#050c05,#081408,#060d06);overflow:hidden;">
         <svg viewBox="0 0 500 460" width="100%" height="100%" style="position:absolute;top:0;left:0;">
             <defs>
@@ -25,29 +26,19 @@ MAP_HTML = """
                 </radialGradient>
             </defs>
             <rect width="500" height="460" fill="url(#grid)"/>
-            <path d="M180,18 L210,14 L245,22 L270,18 L295,30 L320,28 L345,42
-                     L368,52 L385,70 L400,88 L415,108 L425,130 L432,155
-                     L435,180 L430,205 L420,228 L408,248 L395,268
-                     L378,285 L362,300 L345,315 L325,328 L305,340
-                     L285,350 L265,358 L245,362 L225,360 L205,352
-                     L185,340 L168,325 L152,308 L138,290 L126,270
-                     L116,250 L108,228 L104,205 L102,182 L104,158
-                     L108,135 L116,113 L126,93 L140,75 L155,58 L168,42 Z"
+            <path d="M180,18 L210,14 L245,22 L270,18 L295,30 L320,28 L345,42 L368,52 L385,70 L400,88
+                     L415,108 L425,130 L432,155 L435,180 L430,205 L420,228 L408,248 L395,268 L378,285
+                     L362,300 L345,315 L325,328 L305,340 L285,350 L265,358 L245,362 L225,360 L205,352
+                     L185,340 L168,325 L152,308 L138,290 L126,270 L116,250 L108,228 L104,205 L102,182
+                     L104,158 L108,135 L116,113 L126,93 L140,75 L155,58 L168,42 Z"
                   fill="rgba(15,40,15,0.7)" stroke="#2d7a2d" stroke-width="1.2"/>
-            <path d="M200,80 L280,75 L340,100 L360,150 L340,200 L300,230 L250,240 L200,220 L170,180 L175,130 Z"
-                  fill="none" stroke="#1a4a1a" stroke-width="0.6" stroke-dasharray="4,3"/>
             <circle cx="220" cy="140" r="18" fill="url(#gr)"/>
             <polygon points="220,126 228,140 212,140" fill="#ef4444" style="filter:drop-shadow(0 0 5px #ef4444)"/>
-            <circle cx="220" cy="140" r="22" fill="none" stroke="#ef4444" stroke-width="1" stroke-dasharray="3,3" opacity="0.5"/>
             <circle cx="265" cy="195" r="16" fill="url(#gr)" opacity="0.7"/>
             <polygon points="265,182 273,196 257,196" fill="#ef4444" style="filter:drop-shadow(0 0 5px #ef4444)"/>
             <circle cx="235" cy="230" r="14" fill="url(#go)" opacity="0.7"/>
             <polygon points="235,219 242,231 228,231" fill="#f59e0b" style="filter:drop-shadow(0 0 4px #f59e0b)"/>
-            <circle cx="305" cy="210" r="10" fill="rgba(74,222,128,0.12)"/>
             <text x="305" y="215" text-anchor="middle" font-size="12">🛡</text>
-            <circle cx="380" cy="80" r="8" fill="none" stroke="#4ade80" stroke-width="1" opacity="0.6"/>
-            <line x1="372" y1="80" x2="388" y2="80" stroke="#4ade80" stroke-width="0.8" opacity="0.6"/>
-            <line x1="380" y1="72" x2="380" y2="88" stroke="#4ade80" stroke-width="0.8" opacity="0.6"/>
             <text x="110" y="454" font-family="monospace" font-size="7" fill="#2d7a2d">-15.78° S  -47.93° W</text>
             <text x="360" y="454" font-family="monospace" font-size="7" fill="#2d7a2d">ZOOM: 1x | MERCATOR</text>
         </svg>
@@ -71,7 +62,7 @@ GLOBE_HTML = """
               fill="rgba(30,77,30,0.5)" stroke="#2d7a2d" stroke-width="0.8"/>
         <ellipse cx="85" cy="85" rx="82" ry="22" stroke="#4ade80" stroke-width="0.8"
                  stroke-dasharray="4,3" opacity="0.4"/>
-        <circle cx="148" cy="68" r="3.5" fill="#4ade80" style="filter:drop-shadow(0 0 5px #4ade80)"/>
+        <circle cx="148" cy="68" r="3.5" fill="#4ade80"/>
         <circle cx="28"  cy="102" r="2.5" fill="#4ade80" opacity="0.7"/>
         <circle cx="155" cy="100" r="2"   fill="#4ade80" opacity="0.5"/>
         <line x1="148" y1="68" x2="85" y2="85" stroke="#4ade80" stroke-width="0.5" stroke-dasharray="3,3" opacity="0.3"/>
@@ -83,21 +74,144 @@ GLOBE_HTML = """
 """
 
 
+def _c(v):
+    """Cor baseada em valor 0-100."""
+    if v >= 70: return "#4ade80"
+    if v >= 35: return "#f59e0b"
+    return "#ef4444"
+
+
+def _bar(v, color, h=3):
+    v = min(100, max(0, v))
+    return (
+        f'<div style="background:#0a1a0a;border-radius:2px;height:{h}px;margin-top:3px;">'
+        f'<div style="background:{color};height:{h}px;width:{v}%;border-radius:2px;"></div></div>'
+    )
+
+
+def _fleet_panel(data: dict) -> str:
+    bat   = data["bateria"]
+    sig   = data["sinal"]
+    opt   = data["integridade_optica"]
+    buf   = data["buffer"]
+    score = data["risk_score"]
+    sev   = data["severity"]
+
+    SEV_COLOR = {"NOMINAL": "#4ade80", "WARNING": "#f59e0b", "CRITICAL": "#ef4444", "EMERGENCY": "#ef4444"}
+    sev_c = SEV_COLOR.get(sev, "#f59e0b")
+
+    _rnd.seed(int(bat * 10 + sig))
+    online = 0
+    sats_html = ""
+    for i in range(1, 6):
+        b = min(100, max(0, bat + _rnd.uniform(-9, 9)))
+        s = min(100, max(0, sig + _rnd.uniform(-7, 7)))
+        o = min(100, max(0, opt + _rnd.uniform(-5, 5)))
+        st_label = "ONLINE" if s > 20 else "OFFLINE"
+        st_color = "#4ade80" if st_label == "ONLINE" else "#ef4444"
+        if st_label == "ONLINE": online += 1
+        sats_html += f"""
+<div style="flex:1;background:rgba(5,15,5,0.6);border:1px solid #1a3a1a;
+            border-radius:6px;padding:10px 8px;text-align:center;min-width:0;">
+  <div style="font-size:1.1rem;">🛰️</div>
+  <div style="font-family:monospace;font-size:.72rem;color:#d1fae5;margin:4px 0 2px;font-weight:700;">E-0{i}</div>
+  <div style="font-size:.58rem;color:{st_color};letter-spacing:.1em;margin-bottom:8px;">{st_label}</div>
+  <div style="text-align:left;">
+    <div style="display:flex;justify-content:space-between;">
+      <span style="font-size:.58rem;color:#4a7a4a;">BAT</span>
+      <span style="font-family:monospace;font-size:.6rem;color:{_c(b)};">{b:.0f}%</span>
+    </div>
+    {_bar(b, _c(b))}
+    <div style="display:flex;justify-content:space-between;margin-top:5px;">
+      <span style="font-size:.58rem;color:#4a7a4a;">SIG</span>
+      <span style="font-family:monospace;font-size:.6rem;color:{_c(s)};">{s:.0f}%</span>
+    </div>
+    {_bar(s, _c(s))}
+    <div style="display:flex;justify-content:space-between;margin-top:5px;">
+      <span style="font-size:.58rem;color:#4a7a4a;">ÓPT</span>
+      <span style="font-family:monospace;font-size:.6rem;color:{_c(o)};">{o:.0f}%</span>
+    </div>
+    {_bar(o, _c(o))}
+  </div>
+</div>"""
+
+    buf_c = _c(100 - buf)
+    mission = f"""
+<div style="background:rgba(5,15,5,0.6);border:1px solid #1a3a1a;
+            border-radius:6px;padding:14px 16px;">
+  <div style="font-size:.58rem;letter-spacing:.18em;color:#5a8a5a;margin-bottom:14px;">STATUS DA MISSÃO</div>
+
+  <div style="margin-bottom:14px;">
+    <div style="display:flex;justify-content:space-between;align-items:baseline;">
+      <span style="font-size:.62rem;color:#4a7a4a;">RISK SCORE</span>
+      <span style="font-family:monospace;font-size:1.5rem;color:{sev_c};font-weight:700;">
+        {score:.0f}<span style="font-size:.7rem;">/100</span>
+      </span>
+    </div>
+    {_bar(score, sev_c, h=6)}
+    <div style="font-size:.62rem;color:{sev_c};text-align:right;margin-top:4px;
+                letter-spacing:.14em;font-weight:700;">{sev}</div>
+  </div>
+
+  <div style="margin-bottom:10px;">
+    <div style="display:flex;justify-content:space-between;">
+      <span style="font-size:.62rem;color:#4a7a4a;">BUFFER DE IMAGENS</span>
+      <span style="font-family:monospace;font-size:.72rem;color:#d1fae5;">{buf}/100</span>
+    </div>
+    {_bar(buf, buf_c)}
+  </div>
+
+  <div style="margin-bottom:10px;">
+    <div style="display:flex;justify-content:space-between;">
+      <span style="font-size:.62rem;color:#4a7a4a;">INTEGRIDADE ÓPTICA</span>
+      <span style="font-family:monospace;font-size:.72rem;color:#d1fae5;">{opt:.1f}%</span>
+    </div>
+    {_bar(opt, _c(opt))}
+  </div>
+
+  <div style="margin-bottom:10px;">
+    <div style="display:flex;justify-content:space-between;">
+      <span style="font-size:.62rem;color:#4a7a4a;">FORÇA DO SINAL</span>
+      <span style="font-family:monospace;font-size:.72rem;color:#d1fae5;">{sig:.1f}%</span>
+    </div>
+    {_bar(sig, _c(sig))}
+  </div>
+
+  <div style="padding-top:10px;border-top:1px solid #1a3a1a;">
+    <div style="font-size:.6rem;color:#4a7a4a;margin-bottom:3px;">SATÉLITES ATIVOS</div>
+    <div style="font-family:monospace;font-size:1.1rem;color:#4ade80;font-weight:700;">{online} / 5</div>
+  </div>
+</div>"""
+
+    return f"""
+<div style="margin-bottom:16px;">
+  <div style="font-size:.6rem;letter-spacing:.18em;color:#5a8a5a;margin-bottom:10px;">
+    ▸ SITUAÇÃO DA FROTA ORBITAL
+  </div>
+  <div style="display:flex;gap:10px;align-items:stretch;">
+    <div style="display:flex;gap:8px;flex:3;">{sats_html}</div>
+    <div style="flex:1.2;">{mission}</div>
+  </div>
+</div>"""
+
+
 def render_dashboard():
     scenario = st.session_state.get("scenario", "normal")
-    data = get_cycle_data(scenario)
+    data     = get_cycle_data(scenario)
 
     render_topbar("CENTRO DE COMANDO ENVIROSAT AI", "MONITORAMENTO AMBIENTAL ORBITAL")
     render_page_header("DASHBOARD OPERACIONAL", "VISÃO GERAL DA SITUAÇÃO AMBIENTAL")
 
+    # ── Métricas ──
     c1, c2, c3, c4 = st.columns(4)
-    with c1: metric_card("ÁREAS MONITORADAS", "128",                        "+ 8 ÚLTIMAS 24H", "🎯")
-    with c2: metric_card("ALERTAS ATIVOS",    str(data["alertas_ativos"]),  "TEMPO REAL",      "⚠️")
-    with c3: metric_card("FOCOS TÉRMICOS",    str(data["hotspots"]),        "DETECTADOS",      "🔥", delta_negative=True)
-    with c4: metric_card("COBERTURA ORBITAL", data["cobertura_orbital"],    "NOMINAL",         "🛰️")
+    with c1: metric_card("ÁREAS MONITORADAS", "128",                       "+ 8 ÚLTIMAS 24H", "🎯")
+    with c2: metric_card("ALERTAS ATIVOS",    str(data["alertas_ativos"]), "TEMPO REAL",      "⚠️")
+    with c3: metric_card("FOCOS TÉRMICOS",    str(data["hotspots"]),       "DETECTADOS",      "🔥", delta_negative=True)
+    with c4: metric_card("COBERTURA ORBITAL", data["cobertura_orbital"],   "NOMINAL",         "🛰️")
 
     st.markdown("<br>", unsafe_allow_html=True)
 
+    # ── Mapa | Telemetria | Alertas ──
     col_map, col_telem, col_alerts = st.columns([2.2, 1.6, 1.4])
     with col_map:
         st.markdown(MAP_HTML, unsafe_allow_html=True)
@@ -115,45 +229,35 @@ def render_dashboard():
         st.markdown('<div class="panel" style="height:100%;">', unsafe_allow_html=True)
         section_header("ALERTAS CRÍTICOS")
         for alerta in data["alertas"]:
-            alert_card(alerta, data["severity"], "", "🔥")
+            alert_card(alerta, data["severity"], "", "🚨")
         st.markdown('</div>', unsafe_allow_html=True)
 
     st.markdown("<br>", unsafe_allow_html=True)
 
-    SAT_ITEMS = "".join([
-        f'<div class="sat-item"><div class="sat-icon">🛰️</div><div class="sat-name">E-0{i}</div>'
-        f'<div class="sat-status">ONLINE</div></div>'
-        for i in range(1, 6)
-    ])
-    SAT_BAR = f"""
-    <div class="sat-bar">
-        <div style="font-size:.65rem;letter-spacing:.2em;color:#5a8a5a;">SATÉLITES ATIVOS</div>
-        <div style="display:flex;gap:24px;">{SAT_ITEMS}</div>
-        <div style="font-family:'Share Tech Mono',monospace;color:#4ade80;font-size:.85rem;">05 / 05</div>
-    </div>
-    """
+    # ── Frota orbital — painel dinâmico ──
+    st.markdown(_fleet_panel(data), unsafe_allow_html=True)
 
-    import datetime
+    # ── Rodapé ──
     now_utc = datetime.datetime.utcnow()
-
-    col_sat, col_globe = st.columns([2.5, 1])
-    with col_sat:
-        st.markdown(SAT_BAR, unsafe_allow_html=True)
-        c_a, c_b = st.columns(2)
-        with c_a:
-            st.markdown(f"""
-            <div class="panel" style="margin-top:10px;">
-                <div style="font-size:.6rem;letter-spacing:.15em;color:#5a8a5a;">ÚLTIMA ATUALIZAÇÃO</div>
-                <div style="font-family:'Share Tech Mono',monospace;font-size:1rem;color:#d1fae5;margin-top:4px;">{now_utc.strftime('%H:%M:%S')} UTC</div>
-                <div style="font-size:.65rem;color:#4a7a4a;">{now_utc.strftime('%d/%m/%Y')}</div>
-            </div>""", unsafe_allow_html=True)
-        with c_b:
-            st.markdown("""
-            <div class="panel" style="margin-top:10px;">
-                <div style="font-size:.6rem;letter-spacing:.15em;color:#5a8a5a;">FREQUÊNCIA DE COLETA</div>
-                <div style="font-family:'Share Tech Mono',monospace;font-size:1rem;color:#d1fae5;margin-top:4px;">15 MIN</div>
-                <div style="font-size:.65rem;color:#4a7a4a;">ÓRBITA SÍNCRONA</div>
-            </div>""", unsafe_allow_html=True)
+    c_a, c_b, col_globe = st.columns([1.2, 1.2, 1])
+    with c_a:
+        st.markdown(f"""
+<div class="panel">
+  <div style="font-size:.6rem;letter-spacing:.15em;color:#5a8a5a;">ÚLTIMA ATUALIZAÇÃO</div>
+  <div style="font-family:'Share Tech Mono',monospace;font-size:1rem;color:#d1fae5;margin-top:4px;">
+    {now_utc.strftime('%H:%M:%S')} UTC
+  </div>
+  <div style="font-size:.65rem;color:#4a7a4a;">{now_utc.strftime('%d/%m/%Y')}</div>
+</div>""", unsafe_allow_html=True)
+    with c_b:
+        st.markdown(f"""
+<div class="panel">
+  <div style="font-size:.6rem;letter-spacing:.15em;color:#5a8a5a;">CENÁRIO ATIVO</div>
+  <div style="font-family:'Share Tech Mono',monospace;font-size:1rem;color:#d1fae5;margin-top:4px;">
+    {scenario.replace('_', ' ').upper()}
+  </div>
+  <div style="font-size:.65rem;color:#4a7a4a;">ÓRBITA SÍNCRONA · 15 MIN</div>
+</div>""", unsafe_allow_html=True)
     with col_globe:
         section_header("COBERTURA ORBITAL", "VER DETALHES")
         st.markdown(GLOBE_HTML.format(cobertura=data["cobertura_orbital"]), unsafe_allow_html=True)
