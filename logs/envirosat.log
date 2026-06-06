@@ -395,3 +395,40 @@
 2026-06-05 21:55:52,567 [INFO] src.orchestrators.mission_orchestrator: Risk Score: 50.0/100 — CRITICAL
 2026-06-05 21:55:52,573 [INFO] src.orchestrators.mission_orchestrator: Consultando ARIA (LLM)...
 2026-06-05 21:55:56,796 [INFO] src.orchestrators.mission_orchestrator: Ciclo concluído.
+2026-06-05 21:59:07,671 [INFO] src.orchestrators.mission_orchestrator: MissionOrchestrator inicializado.
+2026-06-05 21:59:07,674 [INFO] src.orchestrators.mission_orchestrator: Iniciando ciclo — cenário: NORMAL
+2026-06-05 21:59:07,680 [INFO] src.orchestrators.mission_orchestrator: Telemetria gerada: hotspots=3 battery=90.5
+2026-06-05 21:59:07,681 [INFO] src.orchestrators.mission_orchestrator: Risk Score: 0.0/100 — NOMINAL
+2026-06-05 21:59:07,686 [INFO] src.orchestrators.mission_orchestrator: Consultando ARIA (LLM)...
+2026-06-05 21:59:12,993 [INFO] src.orchestrators.mission_orchestrator: Ciclo concluído.
+2026-06-05 21:59:45,222 [INFO] src.orchestrators.mission_orchestrator: Iniciando ciclo — cenário: WILDFIRE
+2026-06-05 21:59:45,223 [INFO] src.orchestrators.mission_orchestrator: Telemetria gerada: hotspots=25 battery=46.6
+2026-06-05 21:59:45,223 [INFO] src.orchestrators.mission_orchestrator: Risk Score: 45.0/100 — CRITICAL
+2026-06-05 21:59:45,230 [INFO] src.orchestrators.mission_orchestrator: Consultando ARIA (LLM)...
+2026-06-05 21:59:51,394 [INFO] src.orchestrators.mission_orchestrator: Ciclo concluído.
+2026-06-05 22:00:22,883 [INFO] src.orchestrators.mission_orchestrator: Iniciando ciclo — cenário: COMM_FAIL
+2026-06-05 22:00:22,884 [INFO] src.orchestrators.mission_orchestrator: Telemetria gerada: hotspots=8 battery=74.2
+2026-06-05 22:00:22,884 [INFO] src.orchestrators.mission_orchestrator: Risk Score: 55.0/100 — CRITICAL
+2026-06-05 22:00:22,891 [INFO] src.orchestrators.mission_orchestrator: Consultando ARIA (LLM)...
+2026-06-05 22:00:30,130 [INFO] src.orchestrators.mission_orchestrator: Ciclo concluído.
+2026-06-05 22:01:04,484 [INFO] src.orchestrators.mission_orchestrator: Iniciando ciclo — cenário: NORMAL
+2026-06-05 22:01:04,485 [INFO] src.orchestrators.mission_orchestrator: Telemetria gerada: hotspots=2 battery=95.7
+2026-06-05 22:01:04,485 [INFO] src.orchestrators.mission_orchestrator: Risk Score: 0.0/100 — NOMINAL
+2026-06-05 22:01:04,489 [INFO] src.orchestrators.mission_orchestrator: Consultando ARIA (LLM)...
+2026-06-05 22:01:08,830 [INFO] src.orchestrators.mission_orchestrator: Ciclo concluído.
+2026-06-05 22:02:36,911 [INFO] src.orchestrators.mission_orchestrator: Iniciando ciclo — cenário: NORMAL
+2026-06-05 22:02:36,912 [INFO] src.orchestrators.mission_orchestrator: Telemetria gerada: hotspots=3 battery=84.1
+2026-06-05 22:02:36,912 [INFO] src.orchestrators.mission_orchestrator: Risk Score: 0.0/100 — NOMINAL
+2026-06-05 22:02:36,917 [INFO] src.orchestrators.mission_orchestrator: Consultando ARIA (LLM)...
+2026-06-05 22:02:41,211 [INFO] src.orchestrators.mission_orchestrator: Ciclo concluído.
+2026-06-05 22:04:26,148 [INFO] src.orchestrators.mission_orchestrator: MissionOrchestrator inicializado.
+2026-06-05 22:04:33,676 [INFO] src.orchestrators.mission_orchestrator: Iniciando ciclo — cenário: LOW_POWER
+2026-06-05 22:04:33,681 [INFO] src.orchestrators.mission_orchestrator: Telemetria gerada: hotspots=2 battery=15.6
+2026-06-05 22:04:33,681 [INFO] src.orchestrators.mission_orchestrator: Risk Score: 42.0/100 — WARNING
+2026-06-05 22:04:33,686 [INFO] src.orchestrators.mission_orchestrator: Consultando ARIA (LLM)...
+2026-06-05 22:04:39,125 [INFO] src.orchestrators.mission_orchestrator: Ciclo concluído.
+2026-06-05 22:04:47,902 [INFO] src.orchestrators.mission_orchestrator: Iniciando ciclo — cenário: NORMAL
+2026-06-05 22:04:47,903 [INFO] src.orchestrators.mission_orchestrator: Telemetria gerada: hotspots=2 battery=91.6
+2026-06-05 22:04:47,903 [INFO] src.orchestrators.mission_orchestrator: Risk Score: 0.0/100 — NOMINAL
+2026-06-05 22:04:47,907 [INFO] src.orchestrators.mission_orchestrator: Consultando ARIA (LLM)...
+2026-06-05 22:04:52,807 [INFO] src.orchestrators.mission_orchestrator: Ciclo concluído.

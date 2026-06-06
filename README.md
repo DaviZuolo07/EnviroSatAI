@@ -239,7 +239,6 @@ EnviroSatAI/
 ├── prompts/
 │   └── system_prompt.md             # System prompt da ARIA (few-shot)
 │
-├── assets/                          # Screenshots do sistema funcionando
 ├── logs/                            # Log operacional persistente
 ├── main.py                          # Entry point da CLI
 ├── requirements.txt                 # Dependências com versões fixadas
@@ -261,9 +260,9 @@ EnviroSatAI/
 
 ## 🎬 Vídeo de demonstração
 
-🔗 [Assistir demonstração no YouTube](https://www.youtube.com/watch?v=SEU_ID_AQUI)
+🔗 [Assistir demonstração no YouTube](https://youtu.be/lprV3kXH1qo)
 
-> Configurado como "Não listado" no YouTube. Duração: menos de 3 minutos.
+> Configurado como "Não listado" no YouTube.
 
 ---
 
